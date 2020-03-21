@@ -24,6 +24,9 @@ python3 knipse.py
 
 ## History
 
+### 0.1.1 (2020-03-21)
+* fix linter error
+
 ### 0.1.0 (2020-03-21)
 * Created using [cookiecutter-pyscript](https://github.com/luphord/cookiecutter-pyscript)
 
