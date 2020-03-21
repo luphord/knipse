@@ -1,0 +1,5 @@
+pip==20
+bumpversion==0.5.3
+wheel==0.32.1
+flake8==3.7.9
+twine==1.12.1
