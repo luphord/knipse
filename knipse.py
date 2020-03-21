@@ -11,7 +11,7 @@ __version__ = '''0.1.0'''
 
 from argparse import ArgumentParser, Namespace
 
-parser = ArgumentParser(description='''CLI catalog manager for pix and gThumb''')
+parser = ArgumentParser(description='CLI catalog manager for pix and gThumb')
 parser.add_argument('--version',
                     help='Print version number',
                     default=False,
