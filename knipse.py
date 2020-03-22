@@ -47,18 +47,18 @@ parser.add_argument('--version',
 subparsers = parser.add_subparsers(title='subcommands', dest='subcommand',
                                    help='Available subcommands')
 
-mycmd_parser = subparsers.add_parser('mycmd', help='An example subcommand')
-mycmd_parser.add_argument('-n', '--number',
-                          help='some number',
-                          default=17, type=int)
+ls_parser = subparsers.add_parser('ls', help='List files of a catalog')
+ls_parser.add_argument('catalog', type=Path, nargs='+')
 
 
-def _mycmd(args: Namespace) -> None:
-    print('Running mycmd subcommand with n={}...'.format(args.number))
-    print('mycmd completed')
+def _ls(args: Namespace) -> None:
+    for catalog_path in args.catalog:
+        catalog = Catalog.load_from_file(catalog_path)
+        for file_path in catalog.files:
+            print(file_path)
 
 
-mycmd_parser.set_defaults(func=_mycmd)
+ls_parser.set_defaults(func=_ls)
 
 
 def main() -> None:
