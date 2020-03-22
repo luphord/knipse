@@ -10,6 +10,33 @@ __version__ = '''0.1.1'''
 
 
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
+from xml.etree import ElementTree
+
+
+def _iter_files(xml):
+    for f in xml.find('files').findall('file'):
+        yield Path(f.get('uri'))
+
+
+class Catalog:
+    def __init__(self, files):
+        self.files = list(files)
+
+    @staticmethod
+    def load_from_xml(xml):
+        return Catalog(_iter_files(xml))
+
+    @staticmethod
+    def load_from_file(fname):
+        xml = ElementTree.parse(fname)
+        return Catalog.load_from_xml(xml)
+
+    @staticmethod
+    def load_from_string(s):
+        xml = ElementTree.fromstring(s)
+        return Catalog.load_from_xml(xml)
+
 
 parser = ArgumentParser(description='CLI catalog manager for pix and gThumb')
 parser.add_argument('--version',
