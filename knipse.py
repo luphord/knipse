@@ -16,7 +16,7 @@ from xml.etree import ElementTree
 
 def _iter_files(xml):
     for f in xml.find('files').findall('file'):
-        yield Path(f.get('uri').replace('file://', '')).resolve()
+        yield Path(f.get('uri').replace('file://', ''))
 
 
 class Catalog:
