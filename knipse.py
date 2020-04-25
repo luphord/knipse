@@ -19,9 +19,29 @@ def _iter_files(xml):
         yield Path(f.get('uri').replace('file://', ''))
 
 
+class MissingFilesException(Exception):
+    def __init__(self, missing_files):
+        self.missing_files = missing_files
+
+    def __str__(self):
+        mfs = ', '.join(str(mf) for mf in self.missing_files)
+        return 'missing {}'.format(mfs)
+
+
 class Catalog:
     def __init__(self, files):
         self.files = list(files)
+
+    def missing_files(self):
+        '''Yield all files in catalog that do not exist on the file system.'''
+        for file_path in self.files:
+            if not file_path.exists():
+                yield file_path
+
+    def check(self):
+        missing = list(self.missing_files())
+        if missing:
+            raise(MissingFilesException(missing))
 
     @staticmethod
     def load_from_xml(xml):
