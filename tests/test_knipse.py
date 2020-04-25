@@ -1,6 +1,7 @@
 import unittest
+from pathlib import Path
 
-from knipse import Catalog, parser
+from knipse import Catalog, parser, MissingFilesException
 
 
 example_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -29,3 +30,9 @@ class Testknipse(unittest.TestCase):
         self.assertEqual('file2.jpg', catalog.files[0].name)
         self.assertEqual('file3.jpg', catalog.files[1].name)
         self.assertEqual('file1.jpg', catalog.files[2].name)
+
+    def test_checking_catalog(self):
+        catalog = Catalog([])
+        catalog.check()  # empty catalog, noting missing
+        catalog = Catalog([Path('/does/not/exist/873eghfsgdifsidhfksjdhf')])
+        self.assertRaises(MissingFilesException, catalog.check)
