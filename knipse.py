@@ -61,6 +61,18 @@ def _ls(args: Namespace) -> None:
 ls_parser.set_defaults(func=_ls)
 
 
+check_parser = subparsers.add_parser('check', help='Check existence of '
+                                                   'images in catalog')
+check_parser.add_argument('catalog', type=Path, nargs='+')
+
+
+def _check(args: Namespace) -> None:
+    raise NotImplementedError('check')
+
+
+check_parser.set_defaults(func=_check)
+
+
 def main() -> None:
     args = parser.parse_args()
     if args.version:
