@@ -20,7 +20,7 @@ venv: ## create a virtual environment
 	( \
 		. .venv/bin/activate; \
 		pip3 install -e .; \
-		pip3 install -r dev_requirements.txt; \
+		pip3 install -r requirements_dev.txt; \
 	)
 
 clean: clean-build clean-pyc ## remove all build, test, coverage and Python artifacts
