@@ -24,9 +24,12 @@ python3 knipse.py
 
 ## History
 
+### 0.3.0 (not yet)
+* `check` subcommand for checking existence of files in catalog
+
 ### 0.2.0 (2020-03-22)
 * Catalog class for parsing catalog xml files
-* ls subcommand for listing files in catalog
+* `ls` subcommand for listing files in catalog
 
 ### 0.1.1 (2020-03-21)
 * fix linter error
