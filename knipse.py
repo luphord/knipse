@@ -87,7 +87,15 @@ check_parser.add_argument('catalog', type=Path, nargs='+')
 
 
 def _check(args: Namespace) -> None:
-    raise NotImplementedError('check')
+    missing = []
+    for catalog_path in args.catalog:
+        catalog = Catalog.load_from_file(catalog_path)
+        try:
+            catalog.check()
+        except MissingFilesException as e:
+            missing.append('{} {}'.format(catalog_path, str(e)))
+    if missing:
+        raise Exception('Missing files in catalogs:\n' + '\n'.join(missing))
 
 
 check_parser.set_defaults(func=_check)
