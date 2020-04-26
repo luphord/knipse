@@ -43,6 +43,9 @@ def create_example_images(base_path):
 
 class Testknipse(unittest.TestCase):
 
+    def setUp(self):
+        self.catalog = Catalog.load_from_string(example_catalog)
+
     def test_argument_parsing(self):
         args = parser.parse_args([])
         self.assertEqual(args.version, False)
@@ -50,11 +53,10 @@ class Testknipse(unittest.TestCase):
         self.assertEqual(args.version, True)
 
     def test_loading_catalog(self):
-        catalog = Catalog.load_from_string(example_catalog)
-        self.assertEqual(3, len(catalog.files))
-        self.assertEqual('file2.jpg', catalog.files[0].name)
-        self.assertEqual('file3.jpg', catalog.files[1].name)
-        self.assertEqual('file1.jpg', catalog.files[2].name)
+        self.assertEqual(3, len(self.catalog.files))
+        self.assertEqual('file2.jpg', self.catalog.files[0].name)
+        self.assertEqual('file3.jpg', self.catalog.files[1].name)
+        self.assertEqual('file1.jpg', self.catalog.files[2].name)
 
     def test_comparing_catalog(self):
         catalog1 = Catalog.load_from_string(example_catalog)
@@ -69,6 +71,11 @@ class Testknipse(unittest.TestCase):
         self.assertNotEqual(catalog1, catalog2)
         catalog1.files.reverse()
         self.assertEqual(catalog1, catalog2)
+
+    def test_iteration(self):
+        a = set(self.catalog)
+        b = set(self.catalog.files)
+        self.assertEqual(a, b)
 
     def test_xml_serialization(self):
         catalog1 = Catalog.load_from_string(example_catalog)

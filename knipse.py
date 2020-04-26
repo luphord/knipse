@@ -43,7 +43,7 @@ class Catalog:
 
     def missing_files(self):
         '''Yield all files in catalog that do not exist on the file system.'''
-        for file_path in self.files:
+        for file_path in self:
             if not file_path.exists():
                 yield file_path
 
@@ -52,7 +52,11 @@ class Catalog:
             return False
         if len(self.files) != len(other.files):
             return False
-        return all(f1 == f2 for (f1, f2) in zip(self.files, other.files))
+        return all(f1 == f2 for (f1, f2) in zip(self, other))
+
+    def __iter__(self):
+        for file_path in self.files:
+            yield file_path
 
     def check(self):
         missing = list(self.missing_files())
@@ -62,7 +66,7 @@ class Catalog:
     def to_xml(self):
         xml = ElementTree.fromstring(base_catalog)
         files_xml = xml.find('files')
-        for file_path in self.files:
+        for file_path in self:
             file_element = ElementTree.SubElement(files_xml, 'file')
             file_element.attrib['uri'] = file_path.as_uri()
         return xml
