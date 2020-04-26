@@ -81,6 +81,12 @@ class Testknipse(unittest.TestCase):
         catalog1 = Catalog.load_from_string(example_catalog)
         catalog2 = Catalog.load_from_xml(catalog1.to_xml())
         self.assertEqual(catalog1, catalog2)
+        tmpdir = Path(tempfile.mkdtemp())
+        catalog_path = tmpdir / 'my.catalog'
+        catalog1.write(catalog_path)
+        catalog3 = Catalog.load_from_file(catalog_path)
+        self.assertEqual(catalog1, catalog3)
+        shutil.rmtree(tmpdir)
 
     def test_checking_catalog(self):
         catalog = Catalog([])

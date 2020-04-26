@@ -69,7 +69,10 @@ class Catalog:
         for file_path in self:
             file_element = ElementTree.SubElement(files_xml, 'file')
             file_element.attrib['uri'] = file_path.as_uri()
-        return xml
+        return ElementTree.ElementTree(xml)
+
+    def write(self, file):
+        self.to_xml().write(file, encoding='utf8', short_empty_elements=True)
 
     @staticmethod
     def load_from_xml(xml):
