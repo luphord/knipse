@@ -59,12 +59,15 @@ class Testknipse(unittest.TestCase):
     def test_checking_catalog(self):
         catalog = Catalog([])
         catalog.check()  # empty catalog, noting missing
-        # create catalog of example images, remove them and
-        # check that they are missing
         tmp = Path(tempfile.mkdtemp())
-        catalog = Catalog(create_example_images(tmp))
-        shutil.rmtree(tmp)
-        self.assertRaises(MissingFilesException, catalog.check)
+        all_images = create_example_images(tmp)
+        catalog1 = Catalog(all_images)
+        catalog2 = Catalog(all_images[1:])
+        all_images[0].unlink()  # delete first image (contained in catalog1)
+        self.assertRaises(MissingFilesException, catalog1.check)
+        catalog2.check()
+        shutil.rmtree(tmp)  # delete all remaining images
+        self.assertRaises(MissingFilesException, catalog2.check)
 
     def test_example_images(self):
         tmp = Path(tempfile.mkdtemp())
