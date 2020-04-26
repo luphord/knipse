@@ -59,7 +59,11 @@ class Testknipse(unittest.TestCase):
     def test_checking_catalog(self):
         catalog = Catalog([])
         catalog.check()  # empty catalog, noting missing
-        catalog = Catalog([Path('/does/not/exist/873eghfsgdifsidhfksjdhf')])
+        # create catalog of example images, remove them and
+        # check that they are missing
+        tmp = Path(tempfile.mkdtemp())
+        catalog = Catalog(create_example_images(tmp))
+        shutil.rmtree(tmp)
         self.assertRaises(MissingFilesException, catalog.check)
 
     def test_example_images(self):
