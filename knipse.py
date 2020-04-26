@@ -14,6 +14,15 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 
+base_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
+<catalog version="1.0">
+  <order inverse="0" type="general::unsorted"/>
+  <files>
+  </files>
+</catalog>
+'''
+
+
 def _iter_files(xml):
     for f in xml.find('files').findall('file'):
         yield Path(f.get('uri').replace('file://', ''))
@@ -49,6 +58,14 @@ class Catalog:
         missing = list(self.missing_files())
         if missing:
             raise(MissingFilesException(missing))
+
+    def to_xml(self):
+        xml = ElementTree.fromstring(base_catalog)
+        files_xml = xml.find('files')
+        for file_path in self.files:
+            file_element = ElementTree.SubElement(files_xml, 'file')
+            file_element.attrib['uri'] = file_path.as_uri()
+        return xml
 
     @staticmethod
     def load_from_xml(xml):

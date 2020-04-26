@@ -70,6 +70,11 @@ class Testknipse(unittest.TestCase):
         catalog1.files.reverse()
         self.assertEqual(catalog1, catalog2)
 
+    def test_xml_serialization(self):
+        catalog1 = Catalog.load_from_string(example_catalog)
+        catalog2 = Catalog.load_from_xml(catalog1.to_xml())
+        self.assertEqual(catalog1, catalog2)
+
     def test_checking_catalog(self):
         catalog = Catalog([])
         catalog.check()  # empty catalog, noting missing
