@@ -26,6 +26,9 @@ python3 knipse.py
 
 ### 0.3.0 (not yet)
 * `check` subcommand for checking existence of files in catalog
+* drop support for Python 3.5
+* `Catalog` instances can be serialized to xml
+* `Catalog` instances can be iterated and compared for equality
 
 ### 0.2.0 (2020-03-22)
 * Catalog class for parsing catalog xml files
