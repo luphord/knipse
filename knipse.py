@@ -38,6 +38,13 @@ class Catalog:
             if not file_path.exists():
                 yield file_path
 
+    def __eq__(self, other):
+        if not isinstance(other, Catalog):
+            return False
+        if len(self.files) != len(other.files):
+            return False
+        return all(f1 == f2 for (f1, f2) in zip(self.files, other.files))
+
     def check(self):
         missing = list(self.missing_files())
         if missing:

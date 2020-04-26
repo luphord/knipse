@@ -56,6 +56,20 @@ class Testknipse(unittest.TestCase):
         self.assertEqual('file3.jpg', catalog.files[1].name)
         self.assertEqual('file1.jpg', catalog.files[2].name)
 
+    def test_comparing_catalog(self):
+        catalog1 = Catalog.load_from_string(example_catalog)
+        catalog2 = Catalog.load_from_string(example_catalog)
+        catalog3 = Catalog(catalog1.files)
+        self.assertEqual(catalog1, catalog2)
+        self.assertEqual(catalog1, catalog3)
+        del catalog3.files[-1]
+        self.assertNotEqual(catalog1, catalog3)
+        self.assertNotEqual(Catalog([]), catalog1)
+        catalog2.files.reverse()
+        self.assertNotEqual(catalog1, catalog2)
+        catalog1.files.reverse()
+        self.assertEqual(catalog1, catalog2)
+
     def test_checking_catalog(self):
         catalog = Catalog([])
         catalog.check()  # empty catalog, noting missing
