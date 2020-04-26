@@ -1,5 +1,7 @@
 import unittest
 from pathlib import Path
+import shutil
+import tempfile
 
 from knipse import Catalog, parser, MissingFilesException
 
@@ -14,6 +16,29 @@ example_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
   </files>
 </catalog>
 '''
+
+
+def create_example_image(image_path):
+    image_path.parent.mkdir(exist_ok=True, parents=True)
+    with open(image_path, 'wb') as f:
+        f.write(b'\x00')
+    return image_path
+
+
+def create_example_images_iter(base_path):
+    '''Create a folder structure with example images in a generator.'''
+    images_path = base_path / 'images'
+    yield create_example_image(images_path / 'p1.png')
+    yield create_example_image(images_path / 'p2.png')
+    yield create_example_image(images_path / 'folder1' / 'p3.png')
+    yield create_example_image(images_path / 'folder1' / 'p4.png')
+    yield create_example_image(images_path / 'folder2' / 'p5.png')
+    yield create_example_image(images_path / 'folder2' / 'subfldr' / 'p6.png')
+
+
+def create_example_images(base_path):
+    '''Create a folder structure with example images.'''
+    return list(create_example_images_iter(base_path))
 
 
 class Testknipse(unittest.TestCase):
@@ -36,3 +61,8 @@ class Testknipse(unittest.TestCase):
         catalog.check()  # empty catalog, noting missing
         catalog = Catalog([Path('/does/not/exist/873eghfsgdifsidhfksjdhf')])
         self.assertRaises(MissingFilesException, catalog.check)
+
+    def test_example_images(self):
+        tmp = Path(tempfile.mkdtemp())
+        create_example_images(tmp)
+        shutil.rmtree(tmp)
