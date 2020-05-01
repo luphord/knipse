@@ -10,7 +10,7 @@ __version__ = '''0.2.0'''
 
 
 import os
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from xml.etree import ElementTree
 
@@ -99,11 +99,16 @@ def iterate_catalogs(base_path):
                 yield file_path, Catalog.load_from_file(file_path)
 
 
-parser = ArgumentParser(description='CLI catalog manager for pix and gThumb')
+parser = ArgumentParser(description='CLI catalog manager for pix and gThumb',
+                        formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('--version',
                     help='Print version number',
                     default=False,
                     action='store_true')
+parser.add_argument('-p', '--catalogs-base-path',
+                    type=Path,
+                    help='Base path containing libraries and catalogs',
+                    default=Path.home() / '.local/share/pix/catalogs')
 
 subparsers = parser.add_subparsers(title='subcommands', dest='subcommand',
                                    help='Available subcommands')
@@ -122,14 +127,25 @@ def _ls(args: Namespace) -> None:
 ls_parser.set_defaults(func=_ls)
 
 
-check_parser = subparsers.add_parser('check', help='Check existence of '
-                                                   'images in catalog')
-check_parser.add_argument('catalog', type=Path, nargs='+')
+check_parser = \
+    subparsers.add_parser('check',
+                          help='Check existence of images in catalog',
+                          formatter_class=ArgumentDefaultsHelpFormatter)
+check_parser.add_argument('catalog', type=Path, nargs='*')
+
+
+def _load_catalogs(args_catalog, catalogs_base_path):
+    if args_catalog:
+        for catalog_path in args_catalog:
+            yield catalog_path, Catalog.load_from_file(catalog_path)
+    else:
+        yield from iterate_catalogs(catalogs_base_path)
 
 
 def _check(args: Namespace) -> None:
     missing = []
-    for catalog_path in args.catalog:
+    for catalog_path, catalog in _load_catalogs(args.catalog,
+                                                args.catalogs_base_path):
         catalog = Catalog.load_from_file(catalog_path)
         try:
             catalog.check()
