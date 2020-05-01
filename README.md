@@ -24,8 +24,9 @@ python3 knipse.py
 
 ## History
 
-### 0.3.0 (not yet)
+### 0.3.0 (2020-05-01)
 * `check` subcommand for checking existence of files in catalog
+* `check` subcommand walks folder structure and checks each catalog found if no catalog is specified
 * drop support for Python 3.5
 * `Catalog` instances can be serialized to xml
 * `Catalog` instances can be iterated and compared for equality
