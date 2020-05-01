@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from knipse import Catalog, parser, MissingFilesException
+from knipse import Catalog, parser, MissingFilesException, iterate_catalogs
 
 
 example_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -126,13 +126,16 @@ class Testknipse(unittest.TestCase):
         shutil.rmtree(tmp)  # delete all remaining images
         self.assertRaises(MissingFilesException, catalog2.check)
 
-    def test_creating_catalogs_folder_structure(self):
+    def test_walking_catalogs_folder_structure(self):
         tmp = Path(tempfile.mkdtemp())
-        catalogs_images = create_example_images_and_catalogs(tmp)
+        catalogs_images = list(create_example_images_and_catalogs(tmp))
+        existing_catalogs = dict(iterate_catalogs(tmp))
         for catalog_path, images in catalogs_images:
             self.assertTrue(catalog_path.exists())
             for image in images:
                 self.assertTrue(image.exists())
+            catalog = existing_catalogs.pop(catalog_path)
+            self.assertEqual(catalog, Catalog(images))
         shutil.rmtree(tmp)
 
     def test_example_images(self):

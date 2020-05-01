@@ -9,6 +9,7 @@ __email__ = '''luphord@protonmail.com'''
 __version__ = '''0.2.0'''
 
 
+import os
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
 from xml.etree import ElementTree
@@ -87,6 +88,15 @@ class Catalog:
     def load_from_string(s):
         xml = ElementTree.fromstring(s)
         return Catalog.load_from_xml(xml)
+
+
+def iterate_catalogs(base_path):
+    '''Walk directories below `base_path` and yield all catalogs.'''
+    for root, dirs, files in os.walk(base_path):
+        for file_path in files:
+            file_path = Path(root, file_path).resolve()
+            if file_path.suffix == '.catalog':
+                yield file_path, Catalog.load_from_file(file_path)
 
 
 parser = ArgumentParser(description='CLI catalog manager for pix and gThumb')
