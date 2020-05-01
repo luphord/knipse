@@ -1,5 +1,8 @@
 ## History
 
+### 0.3.2 (2020-05-01)
+* upgrade `twine` in order to have working checks with markdow readme + history
+
 ### 0.3.1 (2020-05-01)
 * set `long_description_content_type` to `text/markdown` for proper rendering on [PyPI](https://pypi.python.org/pypi/knipse)
 
