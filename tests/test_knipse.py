@@ -136,6 +136,7 @@ class Testknipse(unittest.TestCase):
                 self.assertTrue(image.exists())
             catalog = existing_catalogs.pop(catalog_path)
             self.assertEqual(catalog, Catalog(images))
+            catalog.check()
         shutil.rmtree(tmp)
 
     def test_example_images(self):
