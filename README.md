@@ -24,6 +24,9 @@ python3 knipse.py
 
 ## History
 
+### 0.3.1 (2020-05-01)
+* set `long_description_content_type` to `text/markdown` for proper rendering on [PyPI](https://pypi.python.org/pypi/knipse)
+
 ### 0.3.0 (2020-05-01)
 * `check` subcommand for checking existence of files in catalog
 * `check` subcommand walks folder structure and checks each catalog found if no catalog is specified
