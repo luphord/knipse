@@ -41,6 +41,31 @@ def create_example_images(base_path):
     return list(create_example_images_iter(base_path))
 
 
+def create_example_catalog(catalog_path, images):
+    catalog_path.parent.mkdir(exist_ok=True, parents=True)
+    Catalog(images).write(catalog_path)
+    return catalog_path
+
+
+def create_example_catalogs(base_path, images):
+    '''Create a folder structure with example catalogs.'''
+    images = list(images)
+    catalogs_path = base_path / 'catalogs'
+    img1 = images[2:]
+    yield create_example_catalog(catalogs_path / 'c1.catalog', img1), img1
+    img2 = list(reversed(images[3:]))
+    yield create_example_catalog(catalogs_path / 'c2.catalog', img2), img2
+    img3 = images[-3:]
+    path3 = catalogs_path / 'somelibrary' / 'c3.catalog'
+    yield create_example_catalog(path3, img3), img3
+
+
+def create_example_images_and_catalogs(base_path):
+    '''Create a folder structure with example images and catalogs.'''
+    images = create_example_images(base_path)
+    yield from create_example_catalogs(base_path, images)
+
+
 class Testknipse(unittest.TestCase):
 
     def setUp(self):
@@ -100,6 +125,15 @@ class Testknipse(unittest.TestCase):
         catalog2.check()
         shutil.rmtree(tmp)  # delete all remaining images
         self.assertRaises(MissingFilesException, catalog2.check)
+
+    def test_creating_catalogs_folder_structure(self):
+        tmp = Path(tempfile.mkdtemp())
+        catalogs_images = create_example_images_and_catalogs(tmp)
+        for catalog_path, images in catalogs_images:
+            self.assertTrue(catalog_path.exists())
+            for image in images:
+                self.assertTrue(image.exists())
+        shutil.rmtree(tmp)
 
     def test_example_images(self):
         tmp = Path(tempfile.mkdtemp())
