@@ -1,5 +1,8 @@
 ## History
 
+### 0.4.1 (2020-05-03)
+* print help when no subcommand is given
+
 ### 0.4.0 (2020-05-03)
 * `create` subcommand for creating catalogs by reading image file names from stdin
 * fix loading image paths containing spaces
