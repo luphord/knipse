@@ -11,6 +11,7 @@ __version__ = '''0.3.2'''
 
 import sys
 import os
+import urllib
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from xml.etree import ElementTree
@@ -27,7 +28,8 @@ base_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
 
 def _iter_files(xml):
     for f in xml.find('files').findall('file'):
-        yield Path(f.get('uri').replace('file://', ''))
+        fname = urllib.parse.unquote(f.get('uri').replace('file://', ''))
+        yield Path(fname)
 
 
 class MissingFilesException(Exception):

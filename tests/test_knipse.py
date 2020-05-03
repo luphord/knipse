@@ -83,6 +83,14 @@ class Testknipse(unittest.TestCase):
         self.assertEqual('file3.jpg', self.catalog.files[1].name)
         self.assertEqual('file1.jpg', self.catalog.files[2].name)
 
+    def test_loading_paths_with_spaces(self):
+        p = Path('/path/to file with spaces')
+        catalog1 = Catalog([p])
+        self.assertEqual(p, catalog1.files[0])
+        catalog2 = Catalog.load_from_xml(catalog1.to_xml())
+        self.assertEqual(p, catalog2.files[0])
+        self.assertEqual(catalog1, catalog2)
+
     def test_comparing_catalog(self):
         catalog1 = Catalog.load_from_string(example_catalog)
         catalog2 = Catalog.load_from_string(example_catalog)
