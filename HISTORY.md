@@ -1,7 +1,8 @@
 ## History
 
-### 0.4.0 (not yet)
+### 0.4.0 (2020-05-03)
 * `create` subcommand for creating catalogs by reading image file names from stdin
+* fix loading image paths containing spaces
 
 ### 0.3.2 (2020-05-01)
 * upgrade `twine` in order to have working checks with markdow readme + history
@@ -17,7 +18,7 @@
 * `Catalog` instances can be iterated and compared for equality
 
 ### 0.2.0 (2020-03-22)
-* Catalog class for parsing catalog xml files
+* `Catalog` class for parsing catalog xml files
 * `ls` subcommand for listing files in catalog
 
 ### 0.1.1 (2020-03-21)
