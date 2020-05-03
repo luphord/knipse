@@ -1,5 +1,8 @@
 ## History
 
+### 0.5.0 (not yet)
+* `catalogs` subcommand for listing available catalogs
+
 ### 0.4.1 (2020-05-03)
 * print help when no subcommand is given
 
