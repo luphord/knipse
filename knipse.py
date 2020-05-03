@@ -9,6 +9,7 @@ __email__ = '''luphord@protonmail.com'''
 __version__ = '''0.3.2'''
 
 
+import sys
 import os
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
@@ -113,6 +114,8 @@ parser.add_argument('-p', '--catalogs-base-path',
 subparsers = parser.add_subparsers(title='subcommands', dest='subcommand',
                                    help='Available subcommands')
 
+# ls subcommand
+
 ls_parser = subparsers.add_parser('ls', help='List files of a catalog')
 ls_parser.add_argument('catalog', type=Path, nargs='+')
 
@@ -126,6 +129,7 @@ def _ls(args: Namespace) -> None:
 
 ls_parser.set_defaults(func=_ls)
 
+# check subcommand
 
 check_parser = \
     subparsers.add_parser('check',
@@ -156,6 +160,27 @@ def _check(args: Namespace) -> None:
 
 
 check_parser.set_defaults(func=_check)
+
+# create subcommand
+
+create_parser = subparsers.add_parser('create',
+                                      help='Create a catalog by reading '
+                                           'file names from stdin')
+
+
+def _paths_from_stdin():
+    for line in sys.stdin.readlines():
+        line = line.strip()
+        if line:
+            yield Path(line).resolve()
+
+
+def _create(args: Namespace) -> None:
+    catalog = Catalog(_paths_from_stdin())
+    catalog.write(sys.stdout.buffer)
+
+
+create_parser.set_defaults(func=_create)
 
 
 def main() -> None:
