@@ -191,6 +191,8 @@ def main() -> None:
         print('''knipse ''' + __version__)
     elif hasattr(args, 'func'):
         args.func(args)
+    else:
+        parser.print_help()
 
 
 if __name__ == '__main__':
