@@ -184,6 +184,19 @@ def _create(args: Namespace) -> None:
 
 create_parser.set_defaults(func=_create)
 
+# catalogs subcommand
+
+catalogs_parser = subparsers.add_parser('catalogs',
+                                        help='List available catalogs')
+
+
+def _catalogs(args: Namespace) -> None:
+    for path, catalog in iterate_catalogs(args.catalogs_base_path):
+        print(path)
+
+
+catalogs_parser.set_defaults(func=_catalogs)
+
 
 def main() -> None:
     args = parser.parse_args()
