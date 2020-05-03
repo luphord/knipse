@@ -1,5 +1,8 @@
 ## History
 
+### 0.4.0 (not yet)
+* `create` subcommand for creating catalogs by reading image file names from stdin
+
 ### 0.3.2 (2020-05-01)
 * upgrade `twine` in order to have working checks with markdow readme + history
 
