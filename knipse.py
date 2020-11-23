@@ -173,6 +173,29 @@ def _check(args: Namespace) -> None:
 
 check_parser.set_defaults(func=_check)
 
+# symlink subcommand
+
+symlink_parser = subparsers.add_parser(
+    "symlink", help="Create symlinks to all files in catalog"
+)
+symlink_parser.add_argument(
+    "-o",
+    "--output-directory",
+    type=Path,
+    help="Directory where symlinks are to be created",
+    default=Path.cwd(),
+)
+symlink_parser.add_argument("catalog", type=Path, nargs="+")
+
+
+def _symlink(args: Namespace) -> None:
+    for catalog_path in args.catalog:
+        catalog = Catalog.load_from_file(catalog_path)
+        catalog.create_symlinks(args.output_directory)
+
+
+symlink_parser.set_defaults(func=_symlink)
+
 # create subcommand
 
 create_parser = subparsers.add_parser(
