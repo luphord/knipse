@@ -129,12 +129,11 @@ subparsers = parser.add_subparsers(
 # ls subcommand
 
 ls_parser = subparsers.add_parser("ls", help="List files of a catalog")
-ls_parser.add_argument("catalog", type=Path, nargs="+")
+ls_parser.add_argument("catalog", type=Path, nargs="*")
 
 
 def _ls(args: Namespace) -> None:
-    for catalog_path in args.catalog:
-        catalog = Catalog.load_from_file(catalog_path)
+    for catalog_path, catalog in _load_catalogs(args.catalog, args.catalogs_base_path):
         for file_path in catalog.files:
             print(file_path)
 
@@ -185,12 +184,11 @@ symlink_parser.add_argument(
     help="Directory where symlinks are to be created",
     default=Path.cwd(),
 )
-symlink_parser.add_argument("catalog", type=Path, nargs="+")
+symlink_parser.add_argument("catalog", type=Path, nargs="*")
 
 
 def _symlink(args: Namespace) -> None:
-    for catalog_path in args.catalog:
-        catalog = Catalog.load_from_file(catalog_path)
+    for catalog_path, catalog in _load_catalogs(args.catalog, args.catalogs_base_path):
         catalog.create_symlinks(args.output_directory)
 
 
