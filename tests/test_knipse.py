@@ -6,7 +6,7 @@ import tempfile
 from knipse import Catalog, parser, MissingFilesException, iterate_catalogs
 
 
-example_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
+example_catalog = """<?xml version="1.0" encoding="UTF-8"?>
 <catalog version="1.0">
   <order inverse="0" type="general::unsorted"/>
   <files>
@@ -15,29 +15,29 @@ example_catalog = '''<?xml version="1.0" encoding="UTF-8"?>
     <file uri="file:///path/to/file1.jpg"/>
   </files>
 </catalog>
-'''
+"""
 
 
 def create_example_image(image_path):
     image_path.parent.mkdir(exist_ok=True, parents=True)
-    with open(image_path, 'wb') as f:
-        f.write(b'\x00')
+    with open(image_path, "wb") as f:
+        f.write(b"\x00")
     return image_path
 
 
 def create_example_images_iter(base_path):
-    '''Create a folder structure with example images in a generator.'''
-    images_path = base_path / 'images'
-    yield create_example_image(images_path / 'p1.png')
-    yield create_example_image(images_path / 'p2.png')
-    yield create_example_image(images_path / 'folder1' / 'p3.png')
-    yield create_example_image(images_path / 'folder1' / 'p4.png')
-    yield create_example_image(images_path / 'folder2' / 'p5.png')
-    yield create_example_image(images_path / 'folder2' / 'subfldr' / 'p6.png')
+    """Create a folder structure with example images in a generator."""
+    images_path = base_path / "images"
+    yield create_example_image(images_path / "p1.png")
+    yield create_example_image(images_path / "p2.png")
+    yield create_example_image(images_path / "folder1" / "p3.png")
+    yield create_example_image(images_path / "folder1" / "p4.png")
+    yield create_example_image(images_path / "folder2" / "p5.png")
+    yield create_example_image(images_path / "folder2" / "subfldr" / "p6.png")
 
 
 def create_example_images(base_path):
-    '''Create a folder structure with example images.'''
+    """Create a folder structure with example images."""
     return list(create_example_images_iter(base_path))
 
 
@@ -48,43 +48,42 @@ def create_example_catalog(catalog_path, images):
 
 
 def create_example_catalogs(base_path, images):
-    '''Create a folder structure with example catalogs.'''
+    """Create a folder structure with example catalogs."""
     images = list(images)
-    catalogs_path = base_path / 'catalogs'
+    catalogs_path = base_path / "catalogs"
     img1 = images[2:]
-    yield create_example_catalog(catalogs_path / 'c1.catalog', img1), img1
+    yield create_example_catalog(catalogs_path / "c1.catalog", img1), img1
     img2 = list(reversed(images[3:]))
-    yield create_example_catalog(catalogs_path / 'c2.catalog', img2), img2
+    yield create_example_catalog(catalogs_path / "c2.catalog", img2), img2
     img3 = images[-3:]
-    path3 = catalogs_path / 'somelibrary' / 'c3.catalog'
+    path3 = catalogs_path / "somelibrary" / "c3.catalog"
     yield create_example_catalog(path3, img3), img3
 
 
 def create_example_images_and_catalogs(base_path):
-    '''Create a folder structure with example images and catalogs.'''
+    """Create a folder structure with example images and catalogs."""
     images = create_example_images(base_path)
     yield from create_example_catalogs(base_path, images)
 
 
 class Testknipse(unittest.TestCase):
-
     def setUp(self):
         self.catalog = Catalog.load_from_string(example_catalog)
 
     def test_argument_parsing(self):
         args = parser.parse_args([])
         self.assertEqual(args.version, False)
-        args = parser.parse_args(['--version'])
+        args = parser.parse_args(["--version"])
         self.assertEqual(args.version, True)
 
     def test_loading_catalog(self):
         self.assertEqual(3, len(self.catalog.files))
-        self.assertEqual('file2.jpg', self.catalog.files[0].name)
-        self.assertEqual('file3.jpg', self.catalog.files[1].name)
-        self.assertEqual('file1.jpg', self.catalog.files[2].name)
+        self.assertEqual("file2.jpg", self.catalog.files[0].name)
+        self.assertEqual("file3.jpg", self.catalog.files[1].name)
+        self.assertEqual("file1.jpg", self.catalog.files[2].name)
 
     def test_loading_paths_with_spaces(self):
-        p = Path('/path/to file with spaces')
+        p = Path("/path/to file with spaces")
         catalog1 = Catalog([p])
         self.assertEqual(p, catalog1.files[0])
         catalog2 = Catalog.load_from_xml(catalog1.to_xml())
@@ -115,7 +114,7 @@ class Testknipse(unittest.TestCase):
         catalog2 = Catalog.load_from_xml(catalog1.to_xml())
         self.assertEqual(catalog1, catalog2)
         tmpdir = Path(tempfile.mkdtemp())
-        catalog_path = tmpdir / 'my.catalog'
+        catalog_path = tmpdir / "my.catalog"
         catalog1.write(catalog_path)
         catalog3 = Catalog.load_from_file(catalog_path)
         self.assertEqual(catalog1, catalog3)
