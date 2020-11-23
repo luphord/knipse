@@ -4,6 +4,7 @@
 * `catalogs` subcommand for listing available catalogs
 * `symlink` subcommand for creating symlinks to files in catalog
 * migrate to travis-ci.com
+* `ls` iterates all available catalogs if none are given as argument
 
 ### 0.4.1 (2020-05-03)
 * print help when no subcommand is given
