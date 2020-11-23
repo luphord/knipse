@@ -75,6 +75,11 @@ class Catalog:
             file_element.attrib["uri"] = file_path.as_uri()
         return ElementTree.ElementTree(xml)
 
+    def create_symlinks(self, directory):
+        """Create symlinks to all files in catalog in `directory`"""
+        for file_path in self:
+            os.symlink(file_path.absolute(), directory / file_path.name)
+
     def write(self, file):
         self.to_xml().write(file, encoding="utf8", short_empty_elements=True)
 

@@ -150,3 +150,13 @@ class Testknipse(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         create_example_images(tmp)
         shutil.rmtree(tmp)
+
+    def test_symlinking(self):
+        tmp = Path(tempfile.mkdtemp())
+        catalog = Catalog(create_example_images(tmp))
+        tmp2 = Path(tempfile.mkdtemp())
+        catalog.create_symlinks(tmp2)
+        for fname in catalog:
+            self.assertTrue((tmp2 / fname.name).exists())
+        shutil.rmtree(tmp)
+        shutil.rmtree(tmp2)
