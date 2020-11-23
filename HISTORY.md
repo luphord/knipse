@@ -2,6 +2,8 @@
 
 ### 0.5.0 (not yet)
 * `catalogs` subcommand for listing available catalogs
+* `symlink` subcommand for creating symlinks to files in catalog
+* migrate to travis-ci.com
 
 ### 0.4.1 (2020-05-03)
 * print help when no subcommand is given
