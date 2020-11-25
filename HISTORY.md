@@ -1,11 +1,13 @@
 ## History
 
-### 0.5.0 (2020-11-25)
+### 0.6.0 (2020-11-25)
 * `catalogs` subcommand for listing available catalogs
 * `symlink` subcommand for creating symlinks to files in catalog; also supports directory structure
 * migrate to travis-ci.com
 * use black for formatting
 * `ls` iterates all available catalogs if none are given as argument
+
+### 0.5.0 skipped by mistake
 
 ### 0.4.1 (2020-05-03)
 * print help when no subcommand is given
