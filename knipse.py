@@ -78,6 +78,7 @@ class Catalog:
     def create_symlinks(self, directory):
         """Create symlinks to all files in catalog in `directory`"""
         for file_path in self:
+            os.makedirs(directory, exist_ok=True)
             os.symlink(file_path.absolute(), directory / file_path.name)
 
     def write(self, file):

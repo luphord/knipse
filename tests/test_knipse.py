@@ -154,7 +154,7 @@ class Testknipse(unittest.TestCase):
     def test_symlinking(self):
         tmp = Path(tempfile.mkdtemp())
         catalog = Catalog(create_example_images(tmp))
-        tmp2 = Path(tempfile.mkdtemp())
+        tmp2 = Path(tempfile.mkdtemp()) / "subdir"
         catalog.create_symlinks(tmp2)
         for fname in catalog:
             self.assertTrue((tmp2 / fname.name).exists())
