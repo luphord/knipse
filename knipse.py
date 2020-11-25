@@ -6,7 +6,7 @@
 
 __author__ = """luphord"""
 __email__ = """luphord@protonmail.com"""
-__version__ = """0.4.1"""
+__version__ = """0.5.0"""
 
 
 import sys
