@@ -158,5 +158,7 @@ class Testknipse(unittest.TestCase):
         catalog.create_symlinks(tmp2)
         for fname in catalog:
             self.assertTrue((tmp2 / fname.name).exists())
+        self.assertRaises(FileExistsError, lambda: catalog.create_symlinks(tmp2))
+        catalog.create_symlinks(tmp2, force_override=True)
         shutil.rmtree(tmp)
         shutil.rmtree(tmp2)

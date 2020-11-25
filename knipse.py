@@ -75,11 +75,14 @@ class Catalog:
             file_element.attrib["uri"] = file_path.as_uri()
         return ElementTree.ElementTree(xml)
 
-    def create_symlinks(self, directory):
+    def create_symlinks(self, directory, force_override=False):
         """Create symlinks to all files in catalog in `directory`"""
         for file_path in self:
             os.makedirs(directory, exist_ok=True)
-            os.symlink(file_path.absolute(), directory / file_path.name)
+            link_path = directory / file_path.name
+            if force_override and link_path.exists():
+                link_path.unlink()
+            os.symlink(file_path.absolute(), link_path)
 
     def write(self, file):
         self.to_xml().write(file, encoding="utf8", short_empty_elements=True)
@@ -185,12 +188,19 @@ symlink_parser.add_argument(
     help="Directory where symlinks are to be created",
     default=Path.cwd(),
 )
+symlink_parser.add_argument(
+    "-f",
+    "--force-override",
+    help="Override existing files",
+    default=False,
+    action="store_true",
+)
 symlink_parser.add_argument("catalog", type=Path, nargs="*")
 
 
 def _symlink(args: Namespace) -> None:
     for catalog_path, catalog in _load_catalogs(args.catalog, args.catalogs_base_path):
-        catalog.create_symlinks(args.output_directory)
+        catalog.create_symlinks(args.output_directory, args.force_override)
 
 
 symlink_parser.set_defaults(func=_symlink)
