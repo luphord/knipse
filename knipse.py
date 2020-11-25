@@ -208,7 +208,7 @@ symlink_parser.set_defaults(func=_symlink)
 # create subcommand
 
 create_parser = subparsers.add_parser(
-    "create", help="Create a catalog by reading " "file names from stdin"
+    "create", help="Create a catalog by reading file names from stdin"
 )
 
 
