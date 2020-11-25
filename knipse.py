@@ -195,12 +195,26 @@ symlink_parser.add_argument(
     default=False,
     action="store_true",
 )
+symlink_parser.add_argument(
+    "-d",
+    "--directory-structure",
+    help="Create a directory structure of symlinks for multiple catalogs",
+    default=False,
+    action="store_true",
+)
 symlink_parser.add_argument("catalog", type=Path, nargs="*")
 
 
 def _symlink(args: Namespace) -> None:
+    output_base = Path(args.output_directory)
     for catalog_path, catalog in _load_catalogs(args.catalog, args.catalogs_base_path):
-        catalog.create_symlinks(args.output_directory, args.force_override)
+        if args.directory_structure:
+            output_path = output_base / Path(catalog_path).relative_to(
+                args.catalogs_base_path
+            ).with_suffix("")
+        else:
+            output_path = output_base
+        catalog.create_symlinks(output_path, args.force_override)
 
 
 symlink_parser.set_defaults(func=_symlink)
