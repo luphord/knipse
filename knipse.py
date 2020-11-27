@@ -205,6 +205,13 @@ symlink_parser.add_argument(
     action="store_true",
 )
 symlink_parser.add_argument(
+    "-i",
+    "--index-prefix",
+    help="Prefix the link file name with the image index, e.g. 123_fname.jpg",
+    default=False,
+    action="store_true",
+)
+symlink_parser.add_argument(
     "-d",
     "--directory-structure",
     help="Create a directory structure of symlinks for multiple catalogs",
@@ -223,7 +230,7 @@ def _symlink(args: Namespace) -> None:
             ).with_suffix("")
         else:
             output_path = output_base
-        catalog.create_symlinks(output_path, args.force_override)
+        catalog.create_symlinks(output_path, args.force_override, args.index_prefix)
 
 
 symlink_parser.set_defaults(func=_symlink)
