@@ -109,6 +109,9 @@ class Testknipse(unittest.TestCase):
         b = set(self.catalog.files)
         self.assertEqual(a, b)
 
+    def test_len(self):
+        self.assertEqual(len(self.catalog), 3)
+
     def test_xml_serialization(self):
         catalog1 = Catalog.load_from_string(example_catalog)
         catalog2 = Catalog.load_from_xml(catalog1.to_xml())

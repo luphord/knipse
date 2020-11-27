@@ -62,6 +62,9 @@ class Catalog:
         for file_path in self.files:
             yield file_path
 
+    def __len__(self):
+        return len(self.files)
+
     def check(self):
         missing = list(self.missing_files())
         if missing:
