@@ -12,6 +12,7 @@ __version__ = """0.6.0"""
 import sys
 import os
 import urllib
+import math
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from xml.etree import ElementTree
@@ -78,11 +79,16 @@ class Catalog:
             file_element.attrib["uri"] = file_path.as_uri()
         return ElementTree.ElementTree(xml)
 
-    def create_symlinks(self, directory, force_override=False):
+    def create_symlinks(self, directory, force_override=False, index_prefix=False):
         """Create symlinks to all files in catalog in `directory`"""
-        for file_path in self:
+        ndigits = math.ceil(math.log10(len(self)))
+        index_fmt = "{:0" + str(ndigits) + "d}_{}"
+        for i, file_path in enumerate(self):
             os.makedirs(directory, exist_ok=True)
-            link_path = directory / file_path.name
+            fname = (
+                index_fmt.format(i, file_path.name) if index_prefix else file_path.name
+            )
+            link_path = directory / fname
             if force_override and link_path.exists():
                 link_path.unlink()
             os.symlink(file_path.absolute(), link_path)

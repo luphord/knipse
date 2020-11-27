@@ -165,3 +165,12 @@ class Testknipse(unittest.TestCase):
         catalog.create_symlinks(tmp2, force_override=True)
         shutil.rmtree(tmp)
         shutil.rmtree(tmp2)
+
+    def test_symlinking_with_index(self):
+        tmp2 = Path(tempfile.mkdtemp()) / "subdir"
+        self.catalog.create_symlinks(tmp2, index_prefix=True)
+        # cannot use Path.exists() as the link targets do not exist
+        self.assertTrue((tmp2 / "0_file2.jpg").is_symlink())
+        self.assertTrue((tmp2 / "1_file3.jpg").is_symlink())
+        self.assertTrue((tmp2 / "2_file1.jpg").is_symlink())
+        shutil.rmtree(tmp2)
