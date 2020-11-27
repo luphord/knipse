@@ -1,5 +1,8 @@
 ## History
 
+### 0.7.0 (not yet)
+* `symlink` can prefix links with their index via `-i/--index-prefix`
+
 ### 0.6.0 (2020-11-25)
 * `catalogs` subcommand for listing available catalogs
 * `symlink` subcommand for creating symlinks to files in catalog; also supports directory structure
