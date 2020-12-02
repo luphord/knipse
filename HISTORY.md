@@ -2,6 +2,7 @@
 
 ### 0.7.0 (not yet)
 * `symlink` can prefix links with their index via `-i/--index-prefix`
+* skip empty catalog files when walking directory structures
 
 ### 0.6.0 (2020-11-25)
 * `catalogs` subcommand for listing available catalogs
