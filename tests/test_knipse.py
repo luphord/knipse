@@ -149,6 +149,11 @@ class Testknipse(unittest.TestCase):
             catalog.check()
         shutil.rmtree(tmp)
 
+    def test_skipping_empty_catalogs(self):
+        tmp = Path(tempfile.mkdtemp())
+        (tmp / "empty.catalog").touch()
+        self.assertFalse(list(iterate_catalogs(tmp)))
+
     def test_example_images(self):
         tmp = Path(tempfile.mkdtemp())
         create_example_images(tmp)

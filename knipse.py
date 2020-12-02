@@ -116,7 +116,7 @@ def iterate_catalogs(base_path):
     for root, dirs, files in os.walk(base_path):
         for file_path in files:
             file_path = Path(root, file_path).resolve()
-            if file_path.suffix == ".catalog":
+            if file_path.suffix == ".catalog" and os.stat(file_path).st_size > 0:
                 yield file_path, Catalog.load_from_file(file_path)
 
 
