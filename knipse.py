@@ -102,6 +102,10 @@ class Catalog:
 
     @staticmethod
     def load_from_file(fname):
+        if Path(fname).stat().st_size == 0:
+            # pix creates empty catalog files initially, i.e. xml is invalid
+            # and loading it needs to be handled as a special case
+            return Catalog([])
         xml = ElementTree.parse(fname)
         return Catalog.load_from_xml(xml)
 
