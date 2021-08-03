@@ -93,8 +93,7 @@ class Testknipse(unittest.TestCase):
     def test_loading_empty_catalog_file(self):
         tmpdir = Path(tempfile.mkdtemp())
         catalog_path = tmpdir / "my.catalog"
-        with open(catalog_path, "w"):
-            pass
+        catalog_path.touch()
         catalog = Catalog.load_from_file(catalog_path)
         self.assertEqual(0, len(catalog))
 
