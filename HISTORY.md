@@ -1,6 +1,6 @@
 ## History
 
-### 0.7.0 (not yet)
+### 0.7.0 (2021-08-03)
 * `symlink` can prefix links with their index via `-i/--index-prefix`
 * support loading empty catalog files
 
