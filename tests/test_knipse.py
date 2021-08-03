@@ -90,6 +90,14 @@ class Testknipse(unittest.TestCase):
         self.assertEqual(p, catalog2.files[0])
         self.assertEqual(catalog1, catalog2)
 
+    def test_loading_empty_catalog_file(self):
+        tmpdir = Path(tempfile.mkdtemp())
+        catalog_path = tmpdir / "my.catalog"
+        with open(catalog_path, "w"):
+            pass
+        catalog = Catalog.load_from_file(catalog_path)
+        self.assertEqual(0, len(catalog))
+
     def test_comparing_catalog(self):
         catalog1 = Catalog.load_from_string(example_catalog)
         catalog2 = Catalog.load_from_string(example_catalog)
