@@ -119,7 +119,7 @@ def iterate_catalogs(base_path):
     """Walk directories below `base_path` and yield all catalogs."""
     for root, dirs, files in os.walk(base_path):
         for file_path in files:
-            file_path = Path(root, file_path).resolve()
+            file_path = Path(root, file_path)
             if file_path.suffix == ".catalog":
                 yield file_path, Catalog.load_from_file(file_path)
 
