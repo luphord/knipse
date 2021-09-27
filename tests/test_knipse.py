@@ -186,3 +186,9 @@ class Testknipse(unittest.TestCase):
         self.assertTrue((tmp2 / "1_file3.jpg").is_symlink())
         self.assertTrue((tmp2 / "2_file1.jpg").is_symlink())
         shutil.rmtree(tmp2)
+
+    def test_empty_catalog_symlinking(self):
+        tmp = Path(tempfile.mkdtemp())
+        catalog = Catalog([])
+        catalog.create_symlinks(tmp)
+        shutil.rmtree(tmp)
