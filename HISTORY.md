@@ -1,5 +1,8 @@
 ## History
 
+### 0.7.1 (not yet)
+* fix domain error when symlinking empty catalog
+
 ### 0.7.0 (2021-08-03)
 * `symlink` can prefix links with their index via `-i/--index-prefix`
 * support loading empty catalog files
