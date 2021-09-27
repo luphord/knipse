@@ -1,6 +1,6 @@
 ## History
 
-### 0.7.1 (not yet)
+### 0.7.1 (2021-09-27)
 * fix domain error when symlinking empty catalog
 * prevent resolution errors in paths with symlinks
 
