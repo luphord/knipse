@@ -239,6 +239,21 @@ def _symlink(args: Namespace) -> None:
 
 symlink_parser.set_defaults(func=_symlink)
 
+# mv subcommand
+
+mv_parser = subparsers.add_parser(
+    "mv", help="Like unix command mv + update all references in catalogs"
+)
+mv_parser.add_argument("src", type=Path, nargs="+")
+mv_parser.add_argument("dest", type=Path, nargs=1)
+
+
+def _move(args: Namespace) -> None:
+    raise NotImplementedError("mv")
+
+
+mv_parser.set_defaults(func=_move)
+
 # create subcommand
 
 create_parser = subparsers.add_parser(
