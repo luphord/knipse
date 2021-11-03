@@ -13,6 +13,7 @@ import sys
 import os
 import urllib
 import math
+import shutil
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from xml.etree import ElementTree
@@ -45,6 +46,28 @@ class MissingFilesException(Exception):
 class Catalog:
     def __init__(self, files):
         self.files = list(files)
+
+    def _update(self, sources, destination):
+        assert destination
+        for i, f in enumerate(self.files):
+            for source in sources:
+                replaced = None
+                if f == source:
+                    if destination.is_dir():
+                        replaced = destination / f.name
+                    else:
+                        replaced = destination
+                elif source in f.parents:
+                    replaced = destination / f.relative_to(source)
+                if replaced:
+                    self.files[i] = replaced
+                    yield f, replaced
+
+    def update(self, sources, destination):
+        """Update file paths that are affected by a move of any element
+        in sources to destination.
+        """
+        return list(self._update(sources, destination))
 
     def missing_files(self):
         """Yield all files in catalog that do not exist on the file system."""
@@ -242,14 +265,32 @@ symlink_parser.set_defaults(func=_symlink)
 # mv subcommand
 
 mv_parser = subparsers.add_parser(
-    "mv", help="Like unix command mv + update all references in catalogs"
+    "mv",
+    help="Move src to dest (similar to unix command mv) "
+    "and update all references to src in catalogs",
 )
 mv_parser.add_argument("src", type=Path, nargs="+")
 mv_parser.add_argument("dest", type=Path, nargs=1)
 
 
 def _move(args: Namespace) -> None:
-    raise NotImplementedError("mv")
+    assert len(args.dest) == 1
+    dest = args.dest[0].resolve()
+    if dest.exists() and not dest.is_dir():
+        raise FileExistsError(dest)
+    if len(args.src) > 1:
+        dest.mkdir(parents=True, exist_ok=True)
+    else:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+    for source in args.src:
+        shutil.move(str(source), str(dest))
+    for catalog_path, catalog in _load_catalogs(None, args.catalogs_base_path):
+        updates = catalog.update(args.src, dest)
+        if updates:
+            catalog.write(catalog_path)
+            print(catalog_path)
+            for s, d in updates:
+                print(f"    {s} -> {d}")
 
 
 mv_parser.set_defaults(func=_move)
