@@ -1,7 +1,7 @@
 # knipse
 
 [![PyPI package](https://img.shields.io/pypi/v/knipse)](https://pypi.python.org/pypi/knipse)
-[![Build status](https://travis-ci.com/luphord/knipse.svg)](https://travis-ci.com/luphord/knipse)
+[![Build status](https://github.com/luphord/knipse/actions/workflows/build-test.yml/badge.svg)](https://github.com/luphord/knipse/actions)
 
 CLI catalog manager for pix and gThumb
 
