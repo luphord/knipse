@@ -132,7 +132,7 @@ class Testknipse(unittest.TestCase):
 
     def test_checking_catalog(self):
         catalog = Catalog([])
-        catalog.check()  # empty catalog, noting missing
+        catalog.check()  # empty catalog, nothing missing
         tmp = Path(tempfile.mkdtemp())
         all_images = create_example_images(tmp)
         catalog1 = Catalog(all_images)
