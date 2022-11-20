@@ -1,5 +1,10 @@
 ## History
 
+### 0.8.0 (2022-11-20)
+* Drop support for Python 3.6 and 3.7
+* Add support for Python 3.9, 3.10 and 3.11
+* Upgrade development dependencies
+
 ### 0.7.1 (2021-09-27)
 * fix domain error when symlinking empty catalog
 * prevent resolution errors in paths with symlinks
