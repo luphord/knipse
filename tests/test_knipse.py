@@ -192,3 +192,13 @@ class Testknipse(unittest.TestCase):
         catalog = Catalog([])
         catalog.create_symlinks(tmp)
         shutil.rmtree(tmp)
+
+    def test_hashes(self):
+        tmp = Path(tempfile.mkdtemp())
+        all_images = create_example_images(tmp)
+        catalog = Catalog(all_images)
+        hashes = list(catalog.image_hashes())
+        self.assertEqual(len(all_images), len(hashes))
+        for path, hash in hashes:
+            # all images have equal content
+            self.assertEqual(hashes[0][1].hexdigest(), hash.hexdigest())

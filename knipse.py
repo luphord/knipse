@@ -14,6 +14,7 @@ import os
 import urllib
 import math
 import shutil
+import hashlib
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from xml.etree import ElementTree
@@ -118,6 +119,13 @@ class Catalog:
 
     def write(self, file):
         self.to_xml().write(file, encoding="utf8", short_empty_elements=True)
+
+    def image_hashes(self):
+        """Return sha1 hashes of all existing images
+        (image content, not name) in catalog"""
+        for file_path in self:
+            if file_path.exists():
+                yield file_path, hashlib.sha1(file_path.read_bytes())
 
     @staticmethod
     def load_from_xml(xml):
